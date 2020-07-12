@@ -5,6 +5,7 @@ import os
 import pandas as pd
 
 from sklearn.externals import joblib
+from sklearn.svm import SVC
 
 ## TODO: Import any additional libraries you need to define a model
 
@@ -39,6 +40,9 @@ if __name__ == '__main__':
     parser.add_argument('--data-dir', type=str, default=os.environ['SM_CHANNEL_TRAIN'])
     
     ## TODO: Add any additional arguments that you will need to pass into your model
+    parser.add_argument('--kernel', type=str, default='rbf')
+    parser.add_argument('--gamma', type=str, default='scale')
+    parser.add_argument('-C', type=float, default=0.9)
     
     # args holds all passed-in arguments
     args = parser.parse_args()
@@ -49,18 +53,18 @@ if __name__ == '__main__':
 
     # Labels are in the first column
     train_y = train_data.iloc[:,0]
-    train_x = train_data.iloc[:,1:]
+    train_X = train_data.iloc[:,1:]
     
     
     ## --- Your code here --- ##
     
 
     ## TODO: Define a model 
-    model = None
+    model = SVC(kernel=args.kernel, gamma=args.gamma, C=args.C)
     
     
     ## TODO: Train the model
-    
+    model.fit(train_X, train_y)
     
     
     ## --- End of your code  --- ##
